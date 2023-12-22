@@ -11,6 +11,9 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((t) => t.id !== id));
+  };
 
   const addTask = (text) => {
     setTasks([
@@ -28,6 +31,8 @@ export default function App() {
       <Navbar />
       <TaskForm addTask={addTask} />
       <TaskList tasks={tasks} />
+      <TaskList tasks={tasks} deleteTask={deleteTask} />
+
     </div>
   );
 }
