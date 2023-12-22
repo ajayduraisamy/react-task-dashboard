@@ -13,11 +13,13 @@ export default function TaskForm({ addTask }) {
     return (
         <div className="mb-3">
             <input
+                className="form-control"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                className="form-control"
-                placeholder="Enter task…"
+                placeholder="Enter new task"
+                onKeyDown={(e) => e.key === "Enter" && submit()}
             />
+
 
             <button className="btn btn-primary mt-2" onClick={submit}>
                 Add Task
