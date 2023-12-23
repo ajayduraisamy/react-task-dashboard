@@ -1,4 +1,5 @@
-export default function TaskList({ tasks, deleteTask }) {
+export default function TaskList({ tasks, deleteTask, toggleTask })
+
     if (!tasks.length) return <p className="text-muted mt-3">No tasks yet ✅</p>;
 
     return (
@@ -8,7 +9,16 @@ export default function TaskList({ tasks, deleteTask }) {
                     key={task.id}
                     className="list-group-item d-flex justify-content-between"
                 >
-                    {task.text}
+                    <span
+                        style={{
+                            cursor: "pointer",
+                            textDecoration: task.completed ? "line-through" : "none",
+                        }}
+                        onClick={() => toggleTask(task.id)}
+                    >
+                        {task.text}
+                    </span>
+
                     <button
                         className="btn btn-sm btn-danger"
                         onClick={() => deleteTask(task.id)}
@@ -17,6 +27,7 @@ export default function TaskList({ tasks, deleteTask }) {
                     </button>
                 </li>
             ))}
+                    
         </ul>
     );
 }
