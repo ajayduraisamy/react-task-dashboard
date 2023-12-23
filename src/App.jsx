@@ -7,6 +7,7 @@ export default function App() {
   const [tasks, setTasks] = useState(
     JSON.parse(localStorage.getItem("tasks") || "[]")
   );
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -14,6 +15,11 @@ export default function App() {
   const deleteTask = (id) => {
     setTasks(tasks.filter((t) => t.id !== id));
   };
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === "active") return !task.completed;
+    if (filter === "done") return task.completed;
+    return true;
+  });
 
   const addTask = (text) => {
     setTasks([

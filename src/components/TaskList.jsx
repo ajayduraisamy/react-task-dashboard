@@ -27,7 +27,29 @@ export default function TaskList({ tasks, deleteTask, toggleTask })
                     </button>
                 </li>
             ))}
-                    
+            <div className="mb-3">
+                <button
+                    className="btn btn-outline-primary me-2"
+                    onClick={() => setFilter("all")}
+                >
+                    All
+                </button>
+
+                <button
+                    className="btn btn-outline-primary me-2"
+                    onClick={() => setFilter("active")}
+                >
+                    Active
+                </button>
+
+                <button
+                    className="btn btn-outline-primary"
+                    onClick={() => setFilter("done")}
+                >
+                    Done
+                </button>
+            </div>
+        
         </ul>
     );
 }
