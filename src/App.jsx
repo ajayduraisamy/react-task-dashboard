@@ -38,6 +38,9 @@ export default function App() {
       <TaskForm addTask={addTask} />
       <TaskList tasks={tasks} />
       <TaskList tasks={tasks} deleteTask={deleteTask} />
+      <p className="text-muted">
+        Showing {filteredTasks.length} / {tasks.length} tasks
+      </p>
 
     </div>
   );
