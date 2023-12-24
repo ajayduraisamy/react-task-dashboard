@@ -8,6 +8,9 @@ export default function App() {
     JSON.parse(localStorage.getItem("tasks") || "[]")
   );
   // task updates persist automatically via localStorage effect
+  const clearCompleted = () => {
+    setTasks(tasks.filter((t) => !t.completed));
+  };
 
   const [filter, setFilter] = useState("all");
 
