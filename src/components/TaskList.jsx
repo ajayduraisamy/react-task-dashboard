@@ -45,9 +45,12 @@ export default function TaskList({
                                     : ""
                             }
                                 onClick={() => {
+                                    if (editText.trim().length < 3) return alert("Text too short");
+                                    updateTask(task.id, editText);
                                     setEditingId(null);
                                     setEditText("");
                                 }}
+
 
                         >
                             {task.text}
