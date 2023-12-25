@@ -41,6 +41,12 @@ export default function App() {
       <p className="text-muted">
         Showing {filteredTasks.length} / {tasks.length} tasks
       </p>
+      <TaskList
+        tasks={filteredTasks}
+        deleteTask={deleteTask}
+        toggleTask={toggleTask}
+        updateTask={updateTask}
+      />
 
     </div>
   );
