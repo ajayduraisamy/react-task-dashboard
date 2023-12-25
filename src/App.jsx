@@ -7,6 +7,8 @@ export default function App() {
   const [tasks, setTasks] = useState(
     JSON.parse(localStorage.getItem("tasks") || "[]")
   );
+  // task updates persist automatically via localStorage effect
+
   const [filter, setFilter] = useState("all");
 
   useEffect(() => {
