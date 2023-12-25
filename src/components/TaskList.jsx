@@ -44,7 +44,11 @@ export default function TaskList({
                                     ? "text-decoration-line-through text-muted"
                                     : ""
                             }
-                            onClick={() => toggleTask(task.id)}
+                                onClick={() => {
+                                    setEditingId(null);
+                                    setEditText("");
+                                }}
+
                         >
                             {task.text}
                         </span>
