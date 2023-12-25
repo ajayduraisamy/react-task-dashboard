@@ -1,55 +1,90 @@
-export default function TaskList({ tasks, deleteTask, toggleTask })
+import { useState } from "react";
 
-    if (!tasks.length) return <p className="text-muted mt-3">No tasks yet ✅</p>;
+export default function TaskList({
+    tasks,
+    deleteTask,
+    toggleTask,
+    updateTask,
+}) {
+    if (!tasks.length) {
+        return (
+            <div className="alert alert-info mt-3">
+                No tasks found — add your first task 🚀
+            </div>
+        );
+    }
+
+    const [editingId, setEditingId] = useState(null);
+    const [editText, setEditText] = useState("");
+
+    const startEdit = (task) => {
+        setEditingId(task.id);
+        setEditText(task.text);
+    };
 
     return (
         <ul className="list-group mt-3">
             {tasks.map((task) => (
                 <li
                     key={task.id}
-                    className="list-group-item d-flex justify-content-between"
+                    className="list-group-item d-flex justify-content-between align-items-center"
                 >
-                    <span
-                        style={{
-                            cursor: "pointer",
-                            textDecoration: task.completed ? "line-through" : "none",
-                        }}
-                        onClick={() => toggleTask(task.id)}
-                    >
-                        {task.text}
-                    </span>
+                    {editingId === task.id ? (
+                        <input
+                            className="form-control me-2"
+                            value={editText}
+                            autoFocus
+                            onChange={(e) => setEditText(e.target.value)}
+                        />
+                    ) : (
+                        <span
+                            style={{ cursor: "pointer" }}
+                            className={
+                                task.completed
+                                    ? "text-decoration-line-through text-muted"
+                                    : ""
+                            }
+                            onClick={() => toggleTask(task.id)}
+                        >
+                            {task.text}
+                        </span>
+                    )}
 
-                    <button
-                        className="btn btn-sm btn-danger"
-                        onClick={() => deleteTask(task.id)}
-                    >
-                        X
-                    </button>
+                    <div>
+                        {editingId === task.id ? (
+                            <>
+                                <button
+                                    className="btn btn-sm btn-success me-1"
+                                    onClick={() => updateTask(task.id, editText)}
+                                >
+                                    Save
+                                </button>
+                                <button
+                                    className="btn btn-sm btn-secondary"
+                                    onClick={() => setEditingId(null)}
+                                >
+                                    Cancel
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <button
+                                    className="btn btn-sm btn-warning me-1"
+                                    onClick={() => startEdit(task)}
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    className="btn btn-sm btn-danger"
+                                    onClick={() => deleteTask(task.id)}
+                                >
+                                    X
+                                </button>
+                            </>
+                        )}
+                    </div>
                 </li>
             ))}
-            <div className="mb-3">
-                <button
-                    className="btn btn-outline-primary me-2"
-                    onClick={() => setFilter("all")}
-                >
-                    All
-                </button>
-
-                <button
-                    className="btn btn-outline-primary me-2"
-                    onClick={() => setFilter("active")}
-                >
-                    Active
-                </button>
-
-                <button
-                    className="btn btn-outline-primary"
-                    onClick={() => setFilter("done")}
-                >
-                    Done
-                </button>
-            </div>
-        
         </ul>
     );
 }
