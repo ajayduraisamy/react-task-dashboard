@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+
 import Navbar from "./components/Navbar";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
+
 
 export default function App() {
   const [tasks, setTasks] = useState(
@@ -12,7 +14,23 @@ export default function App() {
     setTasks(tasks.filter((t) => !t.completed));
   };
 
-  const [filter, setFilter] = useState("all");
+  const filteredTasks = useMemo(() => {
+    return tasks
+      .filter((task) => {
+        const match = task.text
+          .toLowerCase()
+          .includes(search.toLowerCase());
+
+        if (!match) return false;
+
+        if (filter === "active") return !task.completed;
+        if (filter === "done") return task.completed;
+
+        return true;
+      })
+      .sort((a, b) => a.text.localeCompare(b.text));
+  }, [tasks, filter, search]);
+
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
