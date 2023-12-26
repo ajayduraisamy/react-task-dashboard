@@ -25,7 +25,14 @@ export default function TaskForm({ addTask }) {
                 onClick={() => toggleTask(task.id)}
             >
                 {task.text}
-            </span>
+                <const handleToggle= (id) => toggleTask(id);
+const handleDelete = (id) => deleteTask(id);
+const handleSave = (id) => {
+  if (editText.trim().length < 3) return alert("Text too short");
+                updateTask(id, editText);
+                setEditingId(null);
+                setEditText("");
+};
 
 
             <button className="btn btn-primary mt-2" onClick={submit}>
