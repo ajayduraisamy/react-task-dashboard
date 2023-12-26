@@ -3,16 +3,13 @@ import { useState, useEffect, useMemo } from "react";
 import Navbar from "./components/Navbar";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
-
+import useLocalStorage from "./hooks/useLocalStorage";
 
 export default function App() {
-  const [tasks, setTasks] = useState(
-    JSON.parse(localStorage.getItem("tasks") || "[]")
-  );
-  // task updates persist automatically via localStorage effect
-  const clearCompleted = () => {
-    setTasks(tasks.filter((t) => !t.completed));
-  };
+
+
+  const [tasks, setTasks] = useLocalStorage("tasks", []);
+
 
   const filteredTasks = useMemo(() => {
     return tasks
