@@ -7,6 +7,16 @@ import useLocalStorage from "./hooks/useLocalStorage";
 
 export default function App() {
 
+  const addTask = (text) => {
+    setTasks([
+      ...tasks,
+      {
+        id: crypto.randomUUID(),
+        text,
+        completed: false,
+      },
+    ]);
+  };
 
   const [tasks, setTasks] = useLocalStorage("tasks", []);
 
