@@ -44,6 +44,15 @@ const completeAll = () => {
                 >
                     Complete All
                 </button>
+const deleteCompleted = () => {
+                    setTasks(tasks.filter(t => !t.completed));
+};
+                <button
+                    className="btn btn-outline-danger"
+                    onClick={deleteCompleted}
+                >
+                    Delete Completed
+                </button>
 
             <button className="btn btn-primary mt-2" onClick={submit}>
                 Add Task
