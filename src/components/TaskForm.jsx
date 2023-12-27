@@ -35,6 +35,16 @@ const handleSave = (id) => {
 };
 
 
+const completeAll = () => {
+                    setTasks(tasks.map(t => ({ ...t, completed: true })));
+};
+                <button
+                    className="btn btn-outline-success me-2"
+                    onClick={completeAll}
+                >
+                    Complete All
+                </button>
+
             <button className="btn btn-primary mt-2" onClick={submit}>
                 Add Task
             </button>
