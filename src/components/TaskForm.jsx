@@ -62,6 +62,7 @@ const deleteCompleted = () => {
                         {darkMode ? "Light Mode" : "Dark Mode"}
                     </button>
                     <div className={`container ${darkMode ? "bg-dark text-light" : ""} p-4 rounded`}>
+                        // Minor UI tweak for daily progress
 
             <button className="btn btn-primary mt-2" onClick={submit}>
                 Add Task
