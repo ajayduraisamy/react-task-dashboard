@@ -6,6 +6,9 @@ export default function TaskList({
     toggleTask,
     updateTask,
 }) {
+    const [editingId, setEditingId] = useState(null);
+    const [editText, setEditText] = useState("");
+
     if (!tasks.length) {
         return (
             <div className="alert alert-info mt-3">
@@ -14,12 +17,20 @@ export default function TaskList({
         );
     }
 
-    const [editingId, setEditingId] = useState(null);
-    const [editText, setEditText] = useState("");
-
     const startEdit = (task) => {
         setEditingId(task.id);
         setEditText(task.text);
+    };
+
+    const saveEdit = (id) => {
+        if (editText.trim().length < 3) {
+            alert("Text too short");
+            return;
+        }
+
+        updateTask(id, editText.trim());
+        setEditingId(null);
+        setEditText("");
     };
 
     return (
@@ -35,6 +46,9 @@ export default function TaskList({
                             value={editText}
                             autoFocus
                             onChange={(e) => setEditText(e.target.value)}
+                            onKeyDown={(e) =>
+                                e.key === "Enter" && saveEdit(task.id)
+                            }
                         />
                     ) : (
                         <span
@@ -44,14 +58,7 @@ export default function TaskList({
                                     ? "text-decoration-line-through text-muted"
                                     : ""
                             }
-                                onClick={() => {
-                                    if (editText.trim().length < 3) return alert("Text too short");
-                                    updateTask(task.id, editText);
-                                    setEditingId(null);
-                                    setEditText("");
-                                }}
-
-
+                            onClick={() => toggleTask(task.id)}
                         >
                             {task.text}
                         </span>
@@ -62,7 +69,7 @@ export default function TaskList({
                             <>
                                 <button
                                     className="btn btn-sm btn-success me-1"
-                                    onClick={() => updateTask(task.id, editText)}
+                                    onClick={() => saveEdit(task.id)}
                                 >
                                     Save
                                 </button>
