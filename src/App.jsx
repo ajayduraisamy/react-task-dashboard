@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 
 import Navbar from "./components/Navbar";
 import TaskForm from "./components/TaskForm";
@@ -6,6 +6,8 @@ import TaskList from "./components/TaskList";
 import useLocalStorage from "./hooks/useLocalStorage";
 
 export default function App() {
+  const [tasks, setTasks] = useLocalStorage("tasks", []);
+  const [filter, setFilter] = useState("all"); // all | active | done
 
   const addTask = (text) => {
     setTasks([
@@ -18,59 +20,66 @@ export default function App() {
     ]);
   };
 
-  const [tasks, setTasks] = useLocalStorage("tasks", []);
+  const toggleTask = (id) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id
+          ? { ...task, completed: !task.completed }
+          : task
+      )
+    );
+  };
 
+  const updateTask = (id, newText) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id
+          ? { ...task, text: newText }
+          : task
+      )
+    );
+  };
+
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
 
   const filteredTasks = useMemo(() => {
-    return tasks
-      .filter((task) => {
-        const match = task.text
-          .toLowerCase()
-          .includes(search.toLowerCase());
-
-        if (!match) return false;
-
-        if (filter === "active") return !task.completed;
-        if (filter === "done") return task.completed;
-
-        return true;
-      })
-      .sort((a, b) => a.text.localeCompare(b.text));
-  }, [tasks, filter, search]);
-
-
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((t) => t.id !== id));
-  };
-  const filteredTasks = tasks.filter((task) => {
-    if (filter === "active") return !task.completed;
-    if (filter === "done") return task.completed;
-    return true;
-  });
-
-  const addTask = (text) => {
-    setTasks([
-      ...tasks,
-      {
-        id: Date.now(),
-        text,
-        completed: false
-      }
-    ]);
-  };
+    if (filter === "active") return tasks.filter((t) => !t.completed);
+    if (filter === "done") return tasks.filter((t) => t.completed);
+    return tasks;
+  }, [tasks, filter]);
 
   return (
-    <div className="container">
+    <div className="container py-4">
       <Navbar />
+
       <TaskForm addTask={addTask} />
-      <TaskList tasks={tasks} />
-      <TaskList tasks={tasks} deleteTask={deleteTask} />
-      <p className="text-muted">
-        Showing {filteredTasks.length} / {tasks.length} tasks
-      </p>
+
+      {/* Filter buttons */}
+      <div className="btn-group mt-3 w-100">
+        <button
+          className={`btn ${filter === "all" ? "btn-primary" : "btn-outline-primary"}`}
+          onClick={() => setFilter("all")}
+        >
+          All
+        </button>
+
+        <button
+          className={`btn ${filter === "active" ? "btn-primary" : "btn-outline-primary"}`}
+          onClick={() => setFilter("active")}
+        >
+          Active
+        </button>
+
+        <button
+          className={`btn ${filter === "done" ? "btn-primary" : "btn-outline-primary"}`}
+          onClick={() => setFilter("done")}
+        >
+          Done
+        </button>
+      </div>
+
       <TaskList
         tasks={filteredTasks}
         deleteTask={deleteTask}
@@ -78,6 +87,9 @@ export default function App() {
         updateTask={updateTask}
       />
 
+      <p className="text-muted mt-3 text-center">
+        Showing {filteredTasks.length} / {tasks.length} tasks
+      </p>
     </div>
   );
 }
