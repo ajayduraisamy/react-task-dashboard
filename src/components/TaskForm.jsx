@@ -17,35 +17,61 @@ export default function TaskForm({ addTask }) {
 
     return (
         <div
-            className={`p-4 rounded ${darkMode ? "bg-dark text-light" : "bg-light"
-                }`}
+            className={`p-4 rounded-4 shadow-lg mb-4`}
+            style={{
+                background: darkMode
+                    ? "linear-gradient(135deg, #0f172a, #020617)"
+                    : "linear-gradient(135deg, #ffffff, #f1f5ff)",
+                color: darkMode ? "#fff" : "#0f172a",
+                backdropFilter: "blur(6px)",
+            }}
         >
-            {/* Minor UI tweak for daily progress */}
-
+            {/* Header */}
             <div className="d-flex justify-content-between align-items-center mb-3">
-                <h5 className="m-0">Add New Task</h5>
+                <div>
+                    <h5 className="mb-0 fw-bold">Add New Task</h5>
+                    <small className="opacity-75">
+                        Stay organized & productive
+                    </small>
+                </div>
 
                 <button
-                    className="btn btn-sm btn-secondary"
+                    className={`btn btn-sm px-3 rounded-pill shadow-sm ${darkMode
+                            ? "btn-outline-light"
+                            : "btn-outline-primary"
+                        }`}
                     onClick={() => setDarkMode(!darkMode)}
                 >
-                    {darkMode ? "Light Mode" : "Dark Mode"}
+                    {darkMode ? "🌙 Dark" : "☀️ Light"}
                 </button>
             </div>
 
-            <input
-                className="form-control mb-2"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Enter new task"
-                onKeyDown={(e) => e.key === "Enter" && submit()}
-            />
+            {/* Input */}
+            <div className="position-relative mb-3">
+                <input
+                    className="form-control form-control-lg rounded-pill text-center shadow-sm"
+                    style={{
+                        background: darkMode ? "#020617" : "#fff",
+                        color: darkMode ? "#fff" : "#000",
+                    }}
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    placeholder="What do you need to do today?"
+                    onKeyDown={(e) => e.key === "Enter" && submit()}
+                />
+            </div>
 
+            {/* Button */}
             <button
-                className="btn btn-primary w-100"
+                className="btn btn-primary w-100 py-2 fw-semibold rounded-pill shadow"
+                style={{
+                    background:
+                        "linear-gradient(135deg, #6366f1, #3b82f6)",
+                    border: "none",
+                }}
                 onClick={submit}
             >
-                Add Task
+                ➕ Add Task
             </button>
         </div>
     );
